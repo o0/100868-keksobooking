@@ -7,9 +7,14 @@
 'use strict';
 
 
+/** @constant {string} */
+var HIDDEN_CLASSNAME = 'hidden';
+
+
 /** @enum {number} */
 var KeyCode = {
   ENTER: 13,
+  ESC: 27,
   SPACE: 32
 };
 
@@ -31,8 +36,16 @@ module.exports = {
    * @return {boolean}
    */
   isActivationEvent: function(evt) {
-    return evt instanceof KeyboardEvent &&
-           [KeyCode.ENTER, KeyCode.SPACE].indexOf(evt.keyCode) > -1;
+    return [KeyCode.ENTER, KeyCode.SPACE].indexOf(evt.keyCode) > -1;
+  },
+
+
+  /**
+   * @param {Event} evt
+   * @return {boolean}
+   */
+  isDeactivationEvent: function(evt) {
+    return evt.keyCode === KeyCode.ESC
   },
 
 
@@ -44,6 +57,15 @@ module.exports = {
    */
   nextPageIsAvailable: function(listSize, page, pageSize) {
     return page < Math.ceil(listSize / pageSize);
+  },
+
+
+  /**
+   * @param {Element} element
+   * @param {boolean} hidden
+   */
+  setElementHidden: function(element, hidden) {
+    element.classList.toggle(HIDDEN_CLASSNAME, hidden);
   },
 
 

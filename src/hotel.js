@@ -7,6 +7,10 @@
 'use strict';
 
 
+var showGallery = require('./gallery');
+var utils = require('./utils');
+
+
 /** @constant {number} */
 var IMAGE_LOAD_TIMEOUT = 10000;
 
@@ -52,6 +56,25 @@ var getHotelElement = function(data, container) {
   }, IMAGE_LOAD_TIMEOUT);
 
   container.appendChild(element);
+
+  element.addEventListener('click', function(evt) {
+    showGallery(data.pictures);
+  });
+
+  element.addEventListener('keydown', function(evt) {
+    if (utils.isActivationEvent(evt)) {
+      if (evt.target.classList.contains('hotel')) {
+        evt.preventDefault();
+        showGallery(data.pictures);
+      }
+
+      if (evt.target.classList.contains('hotel-favourite')) {
+        evt.preventDefault();
+        //
+      }
+    }
+  });
+
   return element;
 };
 
