@@ -3,12 +3,15 @@
 var load = require('./load');
 var filter = require('./filter/filter');
 var FilterType = require('./filter/filter-type');
+var utils = require('./utils');
 
 
 var filtersContainer = document.querySelector('.hotels-filters');
 var hotelsContainer = document.querySelector('.hotels-list');
 var templateElement = document.querySelector('#hotel-template');
+var footer = document.querySelector('footer');
 var elementToClone;
+
 
 if ('content' in templateElement) {
   elementToClone = templateElement.content.querySelector('.hotel');
@@ -83,26 +86,6 @@ var getHotelElement = function(data, container) {
 
 
 /**
- * @param {Array} hotels
- * @param {number} page
- * @param {number} pageSize
- * @return {boolean}
- */
-var isNextPageAvailable = function(hotels, page, pageSize) {
-  return page < Math.floor(hotels.length / pageSize);
-};
-
-
-/** @return {boolean} */
-var isBottomReached = function() {
-  var GAP = 100;
-  var footerElement = document.querySelector('footer');
-  var footerPosition = footerElement.getBoundingClientRect();
-  return footerPosition.top - window.innerHeight - 100 <= 0;
-};
-
-
-/**
  * @param {Array.<Object>} hotels
  * @param {number} page
  */
@@ -127,8 +110,8 @@ var renderNextPages = function(reset) {
     hotelsContainer.innerHTML = '';
   }
 
-  while(isBottomReached() &&
-        isNextPageAvailable(hotels, pageNumber, PAGE_SIZE)) {
+  while(utils.elementIsAtTheBottom(footer) &&
+        utils.nextPageIsAvailable(hotels.length, pageNumber, PAGE_SIZE)) {
     renderHotels(filteredHotels, pageNumber);
     pageNumber++;
   }
