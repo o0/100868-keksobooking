@@ -250,6 +250,7 @@ body {
 }
 
 .hotel-filter-reset {
+  border: 0;
   font-size: 12px;
   cursor: pointer;
   position: absolute;

@@ -177,7 +177,7 @@ var setFilterEnabled = function(filter) {
 };
 
 
-var setFiltersEnabled = function() {
+var setFiltrationEnabled = function() {
   filtersContainer.addEventListener('click', function(evt) {
     if (evt.target.classList.contains('hotel-filter')) {
       setFilterEnabled(evt.target.id);
@@ -209,7 +209,7 @@ var setScrollEnabled = function() {
 load(HOTELS_LOAD_URL, function(loadedHotels) {
   hotels = loadedHotels;
 
-  setFiltersEnabled();
+  setFiltrationEnabled();
   setFilterEnabled(DEFAULT_FILTER);
   setScrollEnabled();
 });
