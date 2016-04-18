@@ -20,7 +20,7 @@ var preview = galleryContainer.querySelector('.gallery-picture');
 var galleryPictures = [];
 
 
-/** @number */
+/** @type {number} */
 var activePicture = 0;
 
 
