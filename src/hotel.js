@@ -7,76 +7,74 @@
 'use strict';
 
 
-var showGallery = require('./gallery');
-var utils = require('./utils');
+define([
+  './gallery',
+  './utils'
+], function(showGallery, utils) {
+  /** @constant {number} */
+  var IMAGE_LOAD_TIMEOUT = 10000;
 
 
-/** @constant {number} */
-var IMAGE_LOAD_TIMEOUT = 10000;
+  var templateElement = document.querySelector('#hotel-template');
+  var elementToClone;
 
 
-var templateElement = document.querySelector('#hotel-template');
-var elementToClone;
+  if ('content' in templateElement) {
+    elementToClone = templateElement.content.querySelector('.hotel');
+  } else {
+    elementToClone = templateElement.querySelector('.hotel');
+  }
 
 
-if ('content' in templateElement) {
-  elementToClone = templateElement.content.querySelector('.hotel');
-} else {
-  elementToClone = templateElement.querySelector('.hotel');
-}
+  /**
+   * @param {Object} data
+   * @param {HTMLElement} container
+   * @return {HTMLElement}
+   */
+  return function(data, container) {
+    var element = elementToClone.cloneNode(true);
+    element.querySelector('.hotel-name').textContent = data.name;
 
+    var backgroundImage = new Image();
+    var backgroundLoadTimeout;
 
-/**
- * @param {Object} data
- * @param {HTMLElement} container
- * @return {HTMLElement}
- */
-var getHotelElement = function(data, container) {
-  var element = elementToClone.cloneNode(true);
-  element.querySelector('.hotel-name').textContent = data.name;
+    /** @param {ProgressEvent} evt */
+    backgroundImage.onload = function(evt) {
+      clearTimeout(backgroundLoadTimeout);
+      element.style.backgroundImage = 'url(\'' + evt.target.src + '\')';
+    };
 
-  var backgroundImage = new Image();
-  var backgroundLoadTimeout;
+    backgroundImage.onerror = function() {
+      element.classList.add('hotel-nophoto');
+    };
 
-  /** @param {ProgressEvent} evt */
-  backgroundImage.onload = function(evt) {
-    clearTimeout(backgroundLoadTimeout);
-    element.style.backgroundImage = 'url(\'' + evt.target.src + '\')';
-  };
+    backgroundImage.src = data.preview;
 
-  backgroundImage.onerror = function() {
-    element.classList.add('hotel-nophoto');
-  };
+    backgroundLoadTimeout = setTimeout(function() {
+      backgroundImage.src = '';
+      element.classList.add('hotel-nophoto');
+    }, IMAGE_LOAD_TIMEOUT);
 
-  backgroundImage.src = data.preview;
+    container.appendChild(element);
 
-  backgroundLoadTimeout = setTimeout(function() {
-    backgroundImage.src = '';
-    element.classList.add('hotel-nophoto');
-  }, IMAGE_LOAD_TIMEOUT);
+    element.addEventListener('click', function(evt) {
+      showGallery(data.pictures);
+    });
 
-  container.appendChild(element);
+    element.addEventListener('keydown', function(evt) {
+      if (utils.isActivationEvent(evt)) {
+        if (evt.target.classList.contains('hotel')) {
+          evt.preventDefault();
+          showGallery(data.pictures);
+        }
 
-  element.addEventListener('click', function(evt) {
-    showGallery(data.pictures);
-  });
-
-  element.addEventListener('keydown', function(evt) {
-    if (utils.isActivationEvent(evt)) {
-      if (evt.target.classList.contains('hotel')) {
-        evt.preventDefault();
-        showGallery(data.pictures);
+        if (evt.target.classList.contains('hotel-favourite')) {
+          evt.preventDefault();
+          //
+        }
       }
+    });
 
-      if (evt.target.classList.contains('hotel-favourite')) {
-        evt.preventDefault();
-        //
-      }
-    }
-  });
-
-  return element;
-};
-
-
-module.exports = getHotelElement;
+    return element;
+  };
+});
