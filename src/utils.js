@@ -7,6 +7,13 @@
 'use strict';
 
 
+/** @enum {number} */
+var KeyCode = {
+  ENTER: 13,
+  SPACE: 32
+};
+
+
 module.exports = {
   /**
    * @param {Node} element
@@ -27,5 +34,15 @@ module.exports = {
    */
   nextPageIsAvailable: function(listSize, page, pageSize) {
     return page < Math.ceil(listSize / pageSize);
+  },
+
+
+  /**
+   * @param {Event} evt
+   * @return {boolean}
+   */
+  isActivationEvent: function(evt) {
+    return evt instanceof KeyboardEvent &&
+           [KeyCode.ENTER, KeyCode.SPACE].indexOf(evt.keyCode) > -1;
   }
 }

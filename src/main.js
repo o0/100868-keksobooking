@@ -105,7 +105,7 @@ var setFiltrationEnabled = function() {
 
   filtersContainer.addEventListener('keydown', function(evt) {
     if (evt.target.classList.contains('hotel-filter') &&
-        [13, 32].indexOf(evt.keyCode) > -1) {
+        utils.isActivationEvent(event)) {
       evt.preventDefault();
       setFilterEnabled(evt.target.id);
     }
