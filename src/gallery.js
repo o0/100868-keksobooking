@@ -74,15 +74,20 @@ var setActivePicture = function(picture) {
  * @param {Array.<pictues>} pictures
  */
 var showGallery = function(pictures) {
-  galleryPictures = pictures;
-  utils.setElementHidden(galleryContainer, false);
+  if (pictures !== galleryPictures) {
+    thumbnailsContainer.innerHTML = '';
 
-  pictures.forEach(function(pic) {
-    var pictureElement = new Image();
-    pictureElement.classList.add('gallery-thumbnails-image');
-    thumbnailsContainer.appendChild(pictureElement);
-    pictureElement.src = pic;
-  });
+    galleryPictures = pictures;
+
+    pictures.forEach(function(pic) {
+      var pictureElement = new Image();
+      pictureElement.classList.add('gallery-thumbnails-image');
+      thumbnailsContainer.appendChild(pictureElement);
+      pictureElement.src = pic;
+    });
+  }
+
+  utils.setElementHidden(galleryContainer, false);
 
   document.addEventListener('keydown', onDocumentKeydownHandler);
   closeElement.addEventListener('click', onCloseClickHandler);
