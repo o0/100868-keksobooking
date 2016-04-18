@@ -1,6 +1,9 @@
 'use strict';
 
 var load = require('./load');
+var filter = require('./filter/filter');
+var FilterType = require('./filter/filter-type');
+
 
 var filtersContainer = document.querySelector('.hotels-filters');
 var hotelsContainer = document.querySelector('.hotels-list');
@@ -34,19 +37,8 @@ var filteredHotels = [];
 var PAGE_SIZE = 9;
 
 
-/** @enum {number} */
-var Filter = {
-  'ALL': 'all',
-  'PRICE': 'expensive-first',
-  'STARS': 'stars',
-  'RATING': 'min-rating',
-  'DISTANCE': 'distance',
-  'FAVORITE': 'favorites'
-};
-
-
 /** @constant {Filter} */
-var DEFAULT_FILTER = Filter.ALL;
+var DEFAULT_FILTER = FilterType.ALL;
 
 
 /** @constant {string} */
@@ -143,40 +135,21 @@ var renderNextPages = function(reset) {
 };
 
 
-/**
- * @param {Array.<Object>} hotels
- * @param {Filter} filter
- * @return {Array.<Object>}
- */
-var getFilteredHotels = function(hotels, filter) {
-  var hotelsToFilter = hotels.slice(0);
-
-  switch (filter) {
-    case Filter.PRICE:
-      hotelsToFilter.sort(function(a, b) {
-        return a.price - b.price;
-      });
-      break;
-  }
-
-  return hotelsToFilter;
-};
-
-
-/** @param {Filter} filter */
-var setFilterEnabled = function(filter) {
-  filteredHotels = getFilteredHotels(hotels, filter);
+/** @param {FilterType} filterType */
+var setFilterEnabled = function(filterType) {
+  filteredHotels = filter(hotels, filterType);
   renderNextPages(true);
 
   var activeFilter = filtersContainer.querySelector('.' + ACTIVE_FILTER_CLASSNAME);
   if (activeFilter) {
     activeFilter.classList.remove(ACTIVE_FILTER_CLASSNAME);
   }
-  var filterToActivate = document.getElementById(filter);
+  var filterToActivate = document.getElementById(filterType);
   filterToActivate.classList.add(ACTIVE_FILTER_CLASSNAME);
 };
 
 
+/**  Включение обработчика кликов по фильтрам */
 var setFiltrationEnabled = function() {
   filtersContainer.addEventListener('click', function(evt) {
     if (evt.target.classList.contains('hotel-filter')) {
@@ -194,6 +167,7 @@ var setFiltrationEnabled = function() {
 };
 
 
+/** Включение обработчика прокрутки */
 var setScrollEnabled = function() {
   var scrollTimeout;
 
