@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Вспомогательные методы
+ * @author Igor Alexeenko (igor.alexeenko@htmlacademy.ru)
+ */
+
+
 'use strict';
 
 
