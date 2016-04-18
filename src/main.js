@@ -20,18 +20,6 @@ var hotelsContainer = document.querySelector('.hotels-list');
 var footer = document.querySelector('footer');
 
 
-/** @constant {string} */
-var HOTELS_LOAD_URL = 'data/hotels.json';
-
-
-/** @type {Array.<Object>} */
-var hotels = [];
-
-
-/** @type {Array.<Object>} */
-var filteredHotels = [];
-
-
 /** @constant {number} */
 var PAGE_SIZE = 9;
 
@@ -42,6 +30,25 @@ var DEFAULT_FILTER = FilterType.ALL;
 
 /** @constant {string} */
 var ACTIVE_FILTER_CLASSNAME = 'hotel-filter-active';
+
+
+/** @constant {string} */
+var HOTELS_LOAD_URL = 'data/hotels.json';
+
+
+/**
+ * Изначальный список загруженных отелей. Используется для фильтрации.
+ * @type {Array.<Object>}
+ */
+var hotels = [];
+
+
+/**
+ * Текущее состояние списка отелей, учитывающее примененный фильтр и сортировку.
+ * Используется для отрисовки.
+ * @type {Array}
+ */
+var filteredHotels = [];
 
 
 /** @type {number} */
