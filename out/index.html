@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="css/main.css" media="screen" title="no title" charset="utf-8">
+  <title>Кексобукинг. Отели в Токио</title>
+</head>
+<body>
+
+<header class="header">
+  <div class="center-wrapper clearfix">
+    <a href="#" class="logo-link"><img src="img/logo.png" class="header-logo" width="225" height="40" alt="Keksobooking. Отели и сладенькие кексы" /></a>
+    <div class="header-phone">
+      <div class="header-phone-number">8 800 250-25-25</div>
+      <div class="header-phone-comment">Звонок по России бесплатно</div>
+    </div>
+  </div>
+</header>
+
+<div class="welcome">
+  <h1 class="welcome-title">Вот вы и в Токио!</h1>
+  <div class="welcome-stats"><span class="welcome-stats-hotelscount">2146</span> отелей и апартаментов</div>
+  <form class="searchform" method="get" id="searchform">
+    <div class="searchform-group searchform-dates">
+      <label class="searchform-label" for="date-from">Заезд</label>
+      <input tabindex="1" type="date" id="date-from" class="searchform-field searchform-dates-field-from" name="from" required>
+
+      <label class="searchform-label" for="date-to">Выезд</label>
+      <input tabindex="1" type="date" id="date-to" class="searchform-field searchform-dates-field-to" name="to" required>
+    </div>
+
+    <div class="searchform-group searchform-guests">
+      <label class="searchform-label" for="searchform-guests-number">Гостей</label>
+      <input tabindex="1" type="number" id="searchform-guests-number" class="searchform-field searchform-guests-field" name="guests" min="1" required>
+
+      <label class="searchform-label" for="searchform-guests-rooms">Комнат</label>
+      <input tabindex="1" type="number" id="searchform-guests-rooms" class="searchform-field searchform-guests-field" name="rooms" min="1" required>
+    </div>
+
+    <button tabindex="1" type="submit" class="searchform-submit">Найти отели</button>
+  </form>
+</div>
+
+<div class="map map-hidden">
+  <span class="map-switch"></span>
+  <span class="map-close"></span>
+</div>
+
+<main class="hotels center-wrapper">
+  <div class="hotels-title">
+    <div class="hotels-title-count">Найдено <span class="hotels-title-count-number"></span> вариантов</div>
+    <div class="hotels-title-dates">
+      <span class="hotels-title-dates-from">24 сентября</span> — 
+      <span class="hotels-title-dates-to">15 октября</span>, для <span class="hotels-title-">2</span> гостей
+    </div>
+  </div>
+
+  <form class="hotels-filters">
+    <div role="radio" aria-checked="false" tabindex="1" id="expensive-first" class="hotel-filter hotel-filter-dropdown">Сначала дорогие</div>
+    <div role="radio" aria-checked="false" tabindex="1" id="stars" class="hotel-filter hotel-filter-dropdown">От 2 звезд</div>
+    <div role="radio" aria-checked="false" tabindex="1" id="min-rating" class="hotel-filter hotel-filter-dropdown">Рейтинг не ниже 6</div>
+    <div role="radio" aria-checked="false" tabindex="1" id="distance" class="hotel-filter hotel-filter-dropdown">До центра не более 4 км</div>
+    <div role="radio" aria-checked="false" tabindex="1" id="favorites" class="hotel-filter">Только избранные</div>
+    <div role="radio" aria-checked="false" tabindex="1" id="all" class="hotel-filter-reset hotel-filter-active">Сбросить фильтры</div>
+  </form>
+
+  <div class="hotels-list"></div>
+</main>
+
+<footer>
+  <div class="center-wrapper">
+    <section class="footer-logo">
+      Сделано в <a tabindex="1" href="http://htmlacademy.ru"><img src="img/htmlacademy-logo.png" class="footer-logo-image" width="100" alt="HTML Academy" />HTML Academy</a> &copy; 2015
+    </section>
+    <nav class="footer-social">
+      <a tabindex="1" href="https://twitter.com/htmlacademy_ru" alt="twitter" class="footer-social-item footer-social-item-twitter">Twitter</a>
+      <a tabindex="1" href="https://www.instagram.com/htmlacademy/" alt="instagram" class="footer-social-item footer-social-item-instagram">Instagtam</a>
+      <a tabindex="1" href="https://www.facebook.com/htmlacademy" alt="facebook" class="footer-social-item footer-social-item-facebook">Facebook</a>
+      <a tabindex="1" href="https://vk.com/htmlacademy" alt="vk" class="footer-social-item footer-social-item-vk">VK</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="overlays">
+  <div class="gallery hidden">
+    <span class="gallery-close" role="button" tabindex="2">&times;</span>
+    <img class="gallery-picture" src="">
+    <div class="gallery-thumbnails-container">
+      <span role="button" tabindex="2" class="gallery-thumbnails-control gallery-thumbnails-control-prev">&larr;</span>
+      <div class="gallery-thumbnails"></div>
+      <span role="button" tabindex="2" class="gallery-thumbnails-control gallery-thumbnails-control-next">&rarr;</span>
+    </div>
+  </div>
+</div>
+
+<template id="hotel-template" style="display: none">
+  <article class="hotel" role="banner" tabindex="1">
+    <span class="hotel-stars"></span>
+    <h3 class="hotel-name"></h3>
+    <div class="hotel-distance"><span class="hotel-distance-kilometers"></span> до центра</div>
+    <span class="hotel-rating"></span>
+    <span class="hotel-favourite" role="checkbox" tabindex="1"></span>
+    <ul class="hotel-amenities"></ul>
+    <a href="#" class="hotel-price" tabindex="1"><span class="hotel-price-value">9700</span>&nbsp;<span class="rouble">руб.</span></a>
+  </article>
+
+  <li class="hotel-amenity"></li>
+
+  <div class="hotels-list-empty">
+    <h3>По этому запросу ничего не найдено</h3>
+    <p>Вероятно, стоит смягчить требования, например отменить выбранный фильтр.</p>
+  </div>
+</template>
+
+<script src="main.js"></script>
+
+</body>
+</html>
