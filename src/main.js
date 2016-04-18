@@ -1,27 +1,23 @@
+/**
+ * @fileoverview Список отелей: загрузка, включение фильтрации и постраничная
+ * отрисовка
+ * @author Igor Alexeenko (igor.alexeenko@htmlacademy.ru)
+ */
+
+
 'use strict';
 
-var load = require('./load');
+
 var filter = require('./filter/filter');
 var FilterType = require('./filter/filter-type');
+var getHotelElement = require('./hotel');
+var load = require('./load');
 var utils = require('./utils');
 
 
 var filtersContainer = document.querySelector('.hotels-filters');
 var hotelsContainer = document.querySelector('.hotels-list');
-var templateElement = document.querySelector('#hotel-template');
 var footer = document.querySelector('footer');
-var elementToClone;
-
-
-if ('content' in templateElement) {
-  elementToClone = templateElement.content.querySelector('.hotel');
-} else {
-  elementToClone = templateElement.querySelector('.hotel');
-}
-
-
-/** @constant {number} */
-var IMAGE_LOAD_TIMEOUT = 10000;
 
 
 /** @constant {string} */
@@ -50,39 +46,6 @@ var ACTIVE_FILTER_CLASSNAME = 'hotel-filter-active';
 
 /** @type {number} */
 var pageNumber = 0;
-
-/**
- * @param {Object} data
- * @param {HTMLElement} container
- * @return {HTMLElement}
- */
-var getHotelElement = function(data, container) {
-  var element = elementToClone.cloneNode(true);
-  element.querySelector('.hotel-name').textContent = data.name;
-
-  var backgroundImage = new Image();
-  var backgroundLoadTimeout;
-
-  /** @param {ProgressEvent} evt */
-  backgroundImage.onload = function(evt) {
-    clearTimeout(backgroundLoadTimeout);
-    element.style.backgroundImage = 'url(\'' + evt.target.src + '\')';
-  };
-
-  backgroundImage.onerror = function() {
-    element.classList.add('hotel-nophoto');
-  };
-
-  backgroundImage.src = data.preview;
-
-  backgroundLoadTimeout = setTimeout(function() {
-    backgroundImage.src = '';
-    element.classList.add('hotel-nophoto');
-  }, IMAGE_LOAD_TIMEOUT);
-
-  container.appendChild(element);
-  return element;
-};
 
 
 /**
