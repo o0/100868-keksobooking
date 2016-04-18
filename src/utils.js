@@ -27,6 +27,16 @@ module.exports = {
 
 
   /**
+   * @param {Event} evt
+   * @return {boolean}
+   */
+  isActivationEvent: function(evt) {
+    return evt instanceof KeyboardEvent &&
+           [KeyCode.ENTER, KeyCode.SPACE].indexOf(evt.keyCode) > -1;
+  },
+
+
+  /**
    * @param {number} listSize
    * @param {number} page
    * @param {number} pageSize
@@ -38,11 +48,14 @@ module.exports = {
 
 
   /**
-   * @param {Event} evt
-   * @return {boolean}
+   * @param {Function} fn
+   * @param {number} timeout
+   * @return {Function} [description]
    */
-  isActivationEvent: function(evt) {
-    return evt instanceof KeyboardEvent &&
-           [KeyCode.ENTER, KeyCode.SPACE].indexOf(evt.keyCode) > -1;
+  throttle: function(fn, timeout) {
+    return function() {
+      clearTimeout(fn._timeoutID);
+      fn._timeoutID = setTimeout(fn, timeout);
+    }
   }
 }

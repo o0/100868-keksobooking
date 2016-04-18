@@ -24,6 +24,10 @@ var footer = document.querySelector('footer');
 var PAGE_SIZE = 9;
 
 
+/** @constant {number} */
+var SCROLL_TIMEOUT = 100;
+
+
 /** @constant {Filter} */
 var DEFAULT_FILTER = FilterType.ALL;
 
@@ -122,14 +126,7 @@ var setFiltrationEnabled = function() {
 
 /** Включение обработчика прокрутки */
 var setScrollEnabled = function() {
-  var scrollTimeout;
-
-  window.addEventListener('scroll', function(evt) {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(function() {
-      renderNextPages();
-    }, 100);
-  });
+  window.addEventListener('scroll', utils.throttle(renderNextPages, SCROLL_TIMEOUT));
 };
 
 
