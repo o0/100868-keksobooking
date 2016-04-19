@@ -8,7 +8,7 @@
 
 
 /** @enum {number} */
-module.exports =  {
+module.exports = {
   'ALL': 'all',
   'PRICE': 'expensive-first',
   'STARS': 'stars',

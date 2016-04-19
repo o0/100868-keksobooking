@@ -19,15 +19,18 @@ var KeyCode = {
 };
 
 
+/** @constant {number} */
+var GAP = 100;
+
+
 module.exports = {
   /**
    * @param {Node} element
    * @return {boolean}
    */
   elementIsAtTheBottom: function(element) {
-    var GAP = 100;
     var elementPosition = element.getBoundingClientRect();
-    return elementPosition.top - window.innerHeight - 100 <= 0;
+    return elementPosition.top - window.innerHeight - GAP <= 0;
   },
 
 
@@ -45,7 +48,7 @@ module.exports = {
    * @return {boolean}
    */
   isDeactivationEvent: function(evt) {
-    return evt.keyCode === KeyCode.ESC
+    return evt.keyCode === KeyCode.ESC;
   },
 
 
@@ -78,6 +81,6 @@ module.exports = {
     return function() {
       clearTimeout(fn._timeoutID);
       fn._timeoutID = setTimeout(fn, timeout);
-    }
+    };
   }
-}
+};

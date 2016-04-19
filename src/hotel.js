@@ -57,7 +57,7 @@ var getHotelElement = function(data, container) {
 
   container.appendChild(element);
 
-  element.addEventListener('click', function(evt) {
+  element.addEventListener('click', function() {
     showGallery(data.pictures);
   });
 

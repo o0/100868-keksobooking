@@ -63,13 +63,13 @@ var pageNumber = 0;
  * @param {Array.<Object>} hotels
  * @param {number} page
  */
-var renderHotels = function(hotels, page) {
+var renderHotels = function(hotelsList, page) {
   var from = page * PAGE_SIZE;
   var to = from + PAGE_SIZE;
 
   var container = document.createDocumentFragment();
 
-  hotels.slice(from, to).forEach(function(hotel) {
+  hotelsList.slice(from, to).forEach(function(hotel) {
     getHotelElement(hotel, container);
   });
 
@@ -84,7 +84,7 @@ var renderNextPages = function(reset) {
     hotelsContainer.innerHTML = '';
   }
 
-  while(utils.elementIsAtTheBottom(footer) &&
+  while (utils.elementIsAtTheBottom(footer) &&
         utils.nextPageIsAvailable(hotels.length, pageNumber, PAGE_SIZE)) {
     renderHotels(filteredHotels, pageNumber);
     pageNumber++;

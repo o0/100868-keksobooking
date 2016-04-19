@@ -7,18 +7,18 @@
 'use strict';
 
 
-var FilterType = require('./filter-type.js');
+var FilterType = require('./filter-type');
 
 
 /**
  * @param {Array.<Object>} hotels
- * @param {FilterType} filter
+ * @param {FilterType} filterType
  * @return {Array.<Object>}
  */
-var filter = function(hotels, filter) {
+var filter = function(hotels, filterType) {
   var hotelsToFilter = hotels.slice(0);
 
-  switch (filter) {
+  switch (filterType) {
     case FilterType.PRICE:
       hotelsToFilter.sort(function(a, b) {
         return a.price - b.price;

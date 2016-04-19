@@ -11,7 +11,7 @@
  * @param {string} url
  * @param {function(Object)} callback
  */
-var load = function(url, callback, params) {
+var load = function(url, callback) {
   var xhr = new XMLHttpRequest();
 
   /** @param {ProgressEvent} */

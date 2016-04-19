@@ -27,7 +27,7 @@ var activePicture = 0;
 /**
  * @param {KeyboardEvent} evt
  */
-var onCloseClickHandler = function(evt) {
+var onCloseClickHandler = function() {
   hideGallery();
 };
 
@@ -40,7 +40,7 @@ var onCloseKeydownHandler = function(evt) {
     evt.preventDefault();
     hideGallery();
   }
-}
+};
 
 
 /**
