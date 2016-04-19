@@ -14,6 +14,8 @@ module.exports = {
     contentBase: path.resolve(projectRoot, OUTPUT_DIRNAME)
   },
 
+  devtool: 'sourcemap',
+
   entry: path.resolve(projectRoot, SRC_DIRNAME, 'main.js'),
 
   output: {
