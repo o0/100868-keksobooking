@@ -10,101 +10,102 @@
 var utils = require('./utils');
 
 
-var galleryContainer = document.querySelector('.gallery');
-var closeElement = galleryContainer.querySelector('.gallery-close');
-var thumbnailsContainer = galleryContainer.querySelector('.gallery-thumbnails');
-var preview = galleryContainer.querySelector('.gallery-picture');
+/** @constructor */
+var Gallery = function() {
+  var self = this;
+
+  this.element = document.querySelector('.gallery');
+
+  var closeElement = this.element.querySelector('.gallery-close');
+  var thumbnailsContainer = this.element.querySelector('.gallery-thumbnails');
+  var preview = this.element.querySelector('.gallery-picture');
+
+  this.galleryPictures = [];
+  this.activePicture = 0;
 
 
-/** @type {Array.<string>} */
-var galleryPictures = [];
+  /**
+   * @param {KeyboardEvent} evt
+   */
+  this.onCloseClickHandler = function() {
+    self.hideGallery();
+  };
 
 
-/** @type {number} */
-var activePicture = 0;
+  /**
+   * @param {KeyboardEvent} evt
+   */
+  this.onCloseKeydownHandler = function(evt) {
+    if (utils.isActivationEvent(evt)) {
+      evt.preventDefault();
+      self.hideGallery();
+    }
+  };
 
 
-/**
- * @param {KeyboardEvent} evt
- */
-var onCloseClickHandler = function() {
-  hideGallery();
+  /**
+   * @param {KeyboardEvent} evt
+   */
+  this.onDocumentKeydownHandler = function(evt) {
+    if (utils.isDeactivationEvent(evt)) {
+      evt.preventDefault();
+      self.hideGallery();
+    }
+  };
+
+
+  /**
+   * @param {number} picture
+   */
+  this.setActivePicture = function(picture) {
+    var thumbnails = thumbnailsContainer.querySelectorAll('img');
+
+    var currentlyActivePic = thumbnailsContainer.querySelector('.active');
+    if (currentlyActivePic) {
+      currentlyActivePic.classList.remove('active');
+    }
+
+    thumbnails[picture].classList.add('active');
+    preview.src = thumbnails[picture].src;
+  };
+
+
+  /**
+   * @param {Array.<pictues>} pictures
+   */
+  this.showGallery = function(pictures) {
+    if (pictures !== this.galleryPictures) {
+      thumbnailsContainer.innerHTML = '';
+
+      this.galleryPictures = pictures;
+
+      pictures.forEach(function(pic) {
+        var pictureElement = new Image();
+        pictureElement.classList.add('gallery-thumbnails-image');
+        thumbnailsContainer.appendChild(pictureElement);
+        pictureElement.src = pic;
+      }, this);
+    }
+
+    utils.setElementHidden(this.element, false);
+
+    document.addEventListener('keydown', this.onDocumentKeydownHandler);
+    closeElement.addEventListener('click', this.onCloseClickHandler);
+    closeElement.addEventListener('keydown', this.onCloseKeydownHandler);
+
+    this.activePicture = 0;
+    this.setActivePicture(this.activePicture);
+  };
+
+
+  this.hideGallery = function() {
+    utils.setElementHidden(this.element, true);
+
+    document.removeEventListener('keydown', this.onDocumentKeydownHandler);
+    closeElement.removeEventListener('click', this.onCloseClickHandler);
+    closeElement.removeEventListener('keydown', this.onCloseKeydownHandler);
+  };
 };
 
 
-/**
- * @param {KeyboardEvent} evt
- */
-var onCloseKeydownHandler = function(evt) {
-  if (utils.isActivationEvent(evt)) {
-    evt.preventDefault();
-    hideGallery();
-  }
-};
-
-
-/**
- * @param {KeyboardEvent} evt
- */
-var onDocumentKeydownHandler = function(evt) {
-  if (utils.isDeactivationEvent(evt)) {
-    evt.preventDefault();
-    hideGallery();
-  }
-};
-
-
-/**
- * @param {number} picture
- */
-var setActivePicture = function(picture) {
-  var thumbnails = thumbnailsContainer.querySelectorAll('img');
-
-  var currentlyActivePic = thumbnailsContainer.querySelector('.active');
-  if (currentlyActivePic) {
-    currentlyActivePic.classList.remove('active');
-  }
-
-  thumbnails[picture].classList.add('active');
-  preview.src = thumbnails[picture].src;
-};
-
-
-/**
- * @param {Array.<pictues>} pictures
- */
-var showGallery = function(pictures) {
-  if (pictures !== galleryPictures) {
-    thumbnailsContainer.innerHTML = '';
-
-    galleryPictures = pictures;
-
-    pictures.forEach(function(pic) {
-      var pictureElement = new Image();
-      pictureElement.classList.add('gallery-thumbnails-image');
-      thumbnailsContainer.appendChild(pictureElement);
-      pictureElement.src = pic;
-    });
-  }
-
-  utils.setElementHidden(galleryContainer, false);
-
-  document.addEventListener('keydown', onDocumentKeydownHandler);
-  closeElement.addEventListener('click', onCloseClickHandler);
-  closeElement.addEventListener('keydown', onCloseKeydownHandler);
-
-  activePicture = 0;
-  setActivePicture(activePicture);
-};
-
-
-var hideGallery = function() {
-  utils.setElementHidden(galleryContainer, true);
-
-  document.removeEventListener('keydown', onDocumentKeydownHandler);
-  closeElement.removeEventListener('click', onCloseClickHandler);
-  closeElement.removeEventListener('keydown', onCloseKeydownHandler);
-};
-
-
-module.exports = showGallery;
+module.exports = new Gallery();

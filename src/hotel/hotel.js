@@ -12,7 +12,7 @@
 
 
 var getHotelElement = require('./get-hotel-element');
-var showGallery = require('../gallery');
+var gallery = require('../gallery');
 var utils = require('../utils');
 
 
@@ -26,14 +26,14 @@ var Hotel = function(data, container) {
   this.element = getHotelElement(this.data, container);
 
   this.onHotelClick = function() {
-    showGallery(data.pictures);
+    gallery.showGallery(data.pictures);
   };
 
   this.onHotelKeydown = function(evt) {
     if (utils.isActivationEvent(evt)) {
       if (evt.target.classList.contains('hotel')) {
         evt.preventDefault();
-        showGallery(data.pictures);
+        gallery.showGallery(data.pictures);
       }
     }
   };
