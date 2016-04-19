@@ -10,7 +10,7 @@
 
 var filter = require('./filter/filter');
 var FilterType = require('./filter/filter-type');
-var getHotelElement = require('./hotel');
+var Hotel = require('./hotel/hotel');
 var load = require('./load');
 var utils = require('./utils');
 
@@ -60,6 +60,13 @@ var pageNumber = 0;
 
 
 /**
+ * Массив отрисованных объектов отеля
+ * @type {Array.<Hotel>}
+ */
+var renderedHotels = [];
+
+
+/**
  * @param {Array.<Object>} hotels
  * @param {number} page
  */
@@ -70,7 +77,7 @@ var renderHotels = function(hotelsList, page) {
   var container = document.createDocumentFragment();
 
   hotelsList.slice(from, to).forEach(function(hotel) {
-    getHotelElement(hotel, container);
+    renderedHotels.push(new Hotel(hotel, container));
   });
 
   hotelsContainer.appendChild(container);
@@ -81,11 +88,15 @@ var renderHotels = function(hotelsList, page) {
 var renderNextPages = function(reset) {
   if (reset) {
     pageNumber = 0;
-    hotelsContainer.innerHTML = '';
+    renderedHotels.forEach(function(hotel) {
+      hotel.remove();
+    });
+
+    renderedHotels = [];
   }
 
   while (utils.elementIsAtTheBottom(footer) &&
-        utils.nextPageIsAvailable(hotels.length, pageNumber, PAGE_SIZE)) {
+         utils.nextPageIsAvailable(hotels.length, pageNumber, PAGE_SIZE)) {
     renderHotels(filteredHotels, pageNumber);
     pageNumber++;
   }

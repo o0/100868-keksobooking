@@ -1,14 +1,11 @@
 /**
- * @fileoverview Отель
+ * @fileoverview Шаблон отеля и функция отрисовки отеля на основе
+ * шаблона с определенным набором данных
  * @author Igor Alexeenko (igor.alexeenko@htmlacademy.ru)
  */
 
 
 'use strict';
-
-
-var showGallery = require('./gallery');
-var utils = require('./utils');
 
 
 /** @constant {number} */
@@ -41,39 +38,29 @@ var getHotelElement = function(data, container) {
   /** @param {ProgressEvent} evt */
   backgroundImage.onload = function(evt) {
     clearTimeout(backgroundLoadTimeout);
+    backgroundImage.onerror = null;
+    backgroundImage = null;
     element.style.backgroundImage = 'url(\'' + evt.target.src + '\')';
   };
 
   backgroundImage.onerror = function() {
+    clearTimeout(backgroundLoadTimeout);
+    backgroundImage.onload = null;
+    backgroundImage = null;
     element.classList.add('hotel-nophoto');
   };
 
   backgroundImage.src = data.preview;
 
   backgroundLoadTimeout = setTimeout(function() {
+    backgroundImage.onerror = null;
+    backgroundImage.onload = null;
     backgroundImage.src = '';
+    backgroundImage = null;
     element.classList.add('hotel-nophoto');
   }, IMAGE_LOAD_TIMEOUT);
 
   container.appendChild(element);
-
-  element.addEventListener('click', function() {
-    showGallery(data.pictures);
-  });
-
-  element.addEventListener('keydown', function(evt) {
-    if (utils.isActivationEvent(evt)) {
-      if (evt.target.classList.contains('hotel')) {
-        evt.preventDefault();
-        showGallery(data.pictures);
-      }
-
-      if (evt.target.classList.contains('hotel-favourite')) {
-        evt.preventDefault();
-        //
-      }
-    }
-  });
 
   return element;
 };
