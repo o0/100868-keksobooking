@@ -8,7 +8,7 @@
 
 
 define(function() {
-  return function(url, callback, params) {
+  return function(url, callback) {
     var xhr = new XMLHttpRequest();
 
     /** @param {ProgressEvent} */

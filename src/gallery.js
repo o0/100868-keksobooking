@@ -25,7 +25,7 @@ define(['./utils'], function(utils) {
   /**
    * @param {KeyboardEvent} evt
    */
-  var onCloseClickHandler = function(evt) {
+  var onCloseClickHandler = function() {
     hideGallery();
   };
 
@@ -38,7 +38,7 @@ define(['./utils'], function(utils) {
       evt.preventDefault();
       hideGallery();
     }
-  }
+  };
 
 
   /**
@@ -80,7 +80,7 @@ define(['./utils'], function(utils) {
   /**
    * @param {Array.<pictues>} pictures
    */
-  return showGallery = function(pictures) {
+  return function(pictures) {
     if (pictures !== galleryPictures) {
       thumbnailsContainer.innerHTML = '';
 

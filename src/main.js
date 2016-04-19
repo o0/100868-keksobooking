@@ -63,7 +63,7 @@ require([
    * @param {Array.<Object>} hotels
    * @param {number} page
    */
-  var renderHotels = function(hotels, page) {
+  var renderHotels = function(hotelsList, page) {
     var from = page * PAGE_SIZE;
     var to = from + PAGE_SIZE;
 
@@ -84,7 +84,7 @@ require([
       hotelsContainer.innerHTML = '';
     }
 
-    while(utils.elementIsAtTheBottom(footer) &&
+    while (utils.elementIsAtTheBottom(footer) &&
           utils.nextPageIsAvailable(hotels.length, pageNumber, PAGE_SIZE)) {
       renderHotels(filteredHotels, pageNumber);
       pageNumber++;

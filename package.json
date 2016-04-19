@@ -23,7 +23,7 @@
   },
   "scripts": {
     "gosha": "webpack --config config/webpack.config.js",
-    "test": "eslint js/",
+    "test": "eslint src/",
     "start": "webpack-dev-server --watch --config config/webpack.config.js"
   },
   "engines": {
