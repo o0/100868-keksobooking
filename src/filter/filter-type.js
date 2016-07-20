@@ -8,11 +8,13 @@
 
 
 /** @enum {number} */
-module.exports = {
-  'ALL': 'all',
-  'PRICE': 'expensive-first',
-  'STARS': 'stars',
-  'RATING': 'min-rating',
-  'DISTANCE': 'distance',
-  'FAVORITE': 'favorites'
-};
+define(function() {
+  return {
+    'ALL': 'all',
+    'PRICE': 'expensive-first',
+    'STARS': 'stars',
+    'RATING': 'min-rating',
+    'DISTANCE': 'distance',
+    'FAVORITE': 'favorites'
+  };
+});

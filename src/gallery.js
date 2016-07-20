@@ -7,38 +7,36 @@
 'use strict';
 
 
-var utils = require('./utils');
+define(['./utils'], function(utils) {
+  var galleryContainer = document.querySelector('.gallery');
+  var closeElement = galleryContainer.querySelector('.gallery-close');
+  var thumbnailsContainer = galleryContainer.querySelector('.gallery-thumbnails');
+  var preview = galleryContainer.querySelector('.gallery-picture');
 
 
-/** @constructor */
-var Gallery = function() {
-  var self = this;
+  /** @type {Array.<string>} */
+  var galleryPictures = [];
 
-  this.element = document.querySelector('.gallery');
 
-  var closeElement = this.element.querySelector('.gallery-close');
-  var thumbnailsContainer = this.element.querySelector('.gallery-thumbnails');
-  var preview = this.element.querySelector('.gallery-picture');
-
-  this.galleryPictures = [];
-  this.activePicture = 0;
+  /** @type {number} */
+  var activePicture = 0;
 
 
   /**
    * @param {KeyboardEvent} evt
    */
-  this.onCloseClickHandler = function() {
-    self.hideGallery();
+  var onCloseClickHandler = function() {
+    hideGallery();
   };
 
 
   /**
    * @param {KeyboardEvent} evt
    */
-  this.onCloseKeydownHandler = function(evt) {
+  var onCloseKeydownHandler = function(evt) {
     if (utils.isActivationEvent(evt)) {
       evt.preventDefault();
-      self.hideGallery();
+      hideGallery();
     }
   };
 
@@ -46,10 +44,10 @@ var Gallery = function() {
   /**
    * @param {KeyboardEvent} evt
    */
-  this.onDocumentKeydownHandler = function(evt) {
+  var onDocumentKeydownHandler = function(evt) {
     if (utils.isDeactivationEvent(evt)) {
       evt.preventDefault();
-      self.hideGallery();
+      hideGallery();
     }
   };
 
@@ -57,7 +55,7 @@ var Gallery = function() {
   /**
    * @param {number} picture
    */
-  this.setActivePicture = function(picture) {
+  var setActivePicture = function(picture) {
     var thumbnails = thumbnailsContainer.querySelectorAll('img');
 
     var currentlyActivePic = thumbnailsContainer.querySelector('.active');
@@ -70,42 +68,39 @@ var Gallery = function() {
   };
 
 
+  var hideGallery = function() {
+    utils.setElementHidden(galleryContainer, true);
+
+    document.removeEventListener('keydown', onDocumentKeydownHandler);
+    closeElement.removeEventListener('click', onCloseClickHandler);
+    closeElement.removeEventListener('keydown', onCloseKeydownHandler);
+  };
+
+
   /**
    * @param {Array.<pictues>} pictures
    */
-  this.showGallery = function(pictures) {
-    if (pictures !== this.galleryPictures) {
+  return function(pictures) {
+    if (pictures !== galleryPictures) {
       thumbnailsContainer.innerHTML = '';
 
-      this.galleryPictures = pictures;
+      galleryPictures = pictures;
 
       pictures.forEach(function(pic) {
         var pictureElement = new Image();
         pictureElement.classList.add('gallery-thumbnails-image');
         thumbnailsContainer.appendChild(pictureElement);
         pictureElement.src = pic;
-      }, this);
+      });
     }
 
-    utils.setElementHidden(this.element, false);
+    utils.setElementHidden(galleryContainer, false);
 
-    document.addEventListener('keydown', this.onDocumentKeydownHandler);
-    closeElement.addEventListener('click', this.onCloseClickHandler);
-    closeElement.addEventListener('keydown', this.onCloseKeydownHandler);
+    document.addEventListener('keydown', onDocumentKeydownHandler);
+    closeElement.addEventListener('click', onCloseClickHandler);
+    closeElement.addEventListener('keydown', onCloseKeydownHandler);
 
-    this.activePicture = 0;
-    this.setActivePicture(this.activePicture);
+    activePicture = 0;
+    setActivePicture(activePicture);
   };
-
-
-  this.hideGallery = function() {
-    utils.setElementHidden(this.element, true);
-
-    document.removeEventListener('keydown', this.onDocumentKeydownHandler);
-    closeElement.removeEventListener('click', this.onCloseClickHandler);
-    closeElement.removeEventListener('keydown', this.onCloseKeydownHandler);
-  };
-};
-
-
-module.exports = new Gallery();
+});

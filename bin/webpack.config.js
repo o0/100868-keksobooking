@@ -11,7 +11,8 @@ const SRC_DIRNAME = 'src';
 
 module.exports = {
   devServer: {
-    contentBase: path.resolve(projectRoot, OUTPUT_DIRNAME)
+    contentBase: path.resolve(projectRoot, OUTPUT_DIRNAME),
+    entryPath: path.resolve(projectRoot, SRC_DIRNAME)
   },
 
   devtool: 'sourcemap',
@@ -21,6 +22,7 @@ module.exports = {
   output: {
     filename: "main.js",
     path: path.resolve(projectRoot, OUTPUT_DIRNAME, 'js'),
+    outputPath: '/',
     sourceMapFilename: "[file].map"
   }
 };

@@ -7,27 +7,25 @@
 'use strict';
 
 
-var FilterType = require('./filter-type');
+define([
+  './filter-type'
+], function(FilterType) {
+  /**
+   * @param {Array.<Object>} hotels
+   * @param {FilterType} filter
+   * @return {Array.<Object>}
+   */
+  return function(hotels, filter) {
+    var hotelsToFilter = hotels.slice(0);
 
+    switch (filter) {
+      case FilterType.PRICE:
+        hotelsToFilter.sort(function(a, b) {
+          return a.price - b.price;
+        });
+        break;
+    }
 
-/**
- * @param {Array.<Object>} hotels
- * @param {FilterType} filterType
- * @return {Array.<Object>}
- */
-var filter = function(hotels, filterType) {
-  var hotelsToFilter = hotels.slice(0);
-
-  switch (filterType) {
-    case FilterType.PRICE:
-      hotelsToFilter.sort(function(a, b) {
-        return a.price - b.price;
-      });
-      break;
-  }
-
-  return hotelsToFilter;
-};
-
-
-module.exports = filter;
+    return hotelsToFilter;
+  };
+});
